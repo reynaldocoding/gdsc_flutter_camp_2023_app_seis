@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "425883875664",
+    "project_id": "appseis-15620",
+    "storage_bucket": "appseis-15620.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425883875664:android:ad758e468dd4fd21049455",
+        "android_client_info": {
+          "package_name": "com.example.app_seis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425883875664-lrrfbod30mk5hbrcpfhgqe80sgqd5k7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLzu0HfnpFut22iw2KuAFDTl-edUTyLnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425883875664-lrrfbod30mk5hbrcpfhgqe80sgqd5k7a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

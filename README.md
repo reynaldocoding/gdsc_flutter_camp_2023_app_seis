@@ -1,4 +1,4 @@
-# gdsc_flutter_camp_2023_app_seis
+# GDSC - Flutter Camp 2023 - App Seis
 
 A new Flutter project.
 
