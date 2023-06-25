@@ -1,146 +1,76 @@
+import 'package:gdsc_flutter_camp_2023_app_seis/src/data/providers/home_screen.dart';
+import 'package:gdsc_flutter_camp_2023_app_seis/src/presentation/screens/add_car_screen.dart';
+import 'package:gdsc_flutter_camp_2023_app_seis/src/presentation/screens/add_photo_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key}) : super(key: key);
-
-  final modelController = TextEditingController();
-  final yearController = TextEditingController();
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final valueProvider = Provider.of<HomeScreenProvider>(context);
+
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: const Text("Firebase App"),
-          centerTitle: true,
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return _CustomForm(
-                      modelController: modelController,
-                      yearController: yearController);
-                });
-          },
-          child: const Icon(
-            Icons.add,
-          ),
-        ));
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text("Firebase App"),
+        centerTitle: true,
+      ),
+      body: _Pages(valueProvider: valueProvider),
+      bottomNavigationBar: _NavigatorBar(valueProvider: valueProvider),
+    );
   }
 }
 
-class _CustomForm extends StatelessWidget {
-  const _CustomForm({
-    required this.modelController,
-    required this.yearController,
+class _NavigatorBar extends StatelessWidget {
+  const _NavigatorBar({
+    required this.valueProvider,
   });
 
-  final TextEditingController modelController;
-  final TextEditingController yearController;
+  final HomeScreenProvider valueProvider;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Modelo del Auto:",
-            style: TextStyle(fontSize: 20),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextField(
-            controller: modelController,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(
-                Icons.car_repair,
-                color: Colors.white,
-              ),
-              hintText: "Ingresa el modelo del auto",
-              border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(20)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(20)),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(20)),
-              fillColor: Colors.teal,
-              filled: true,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            "Año",
-            style: TextStyle(fontSize: 20),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextField(
-            controller: yearController,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(
-                Icons.numbers,
-                color: Colors.white,
-              ),
-              hintText: "Ingresa el modelo del auto",
-              border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(20)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(20)),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(20)),
-              fillColor: Colors.teal,
-              filled: true,
-            ),
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          Center(
-            child: SizedBox(
-              height: 50,
-              width: 200,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                ),
-                icon: const Icon(
-                  Icons.add_box,
-                  color: Colors.white,
-                ),
-                label: const Text(
-                  'Guardar Auto',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {
-                  String model = modelController.text.trim();
-                  String year = yearController.text.trim();
+    return BottomNavigationBar(
+      onTap: (value) {
+        valueProvider.setValue = value;
+      },
+      currentIndex: valueProvider.firstValue,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add_photo_alternate),
+          label: 'Add Photo',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.car_repair),
+          label: 'Add Car',
+        ),
+      ],
+    );
+  }
+}
 
-                  print('Modelo: $model');
-                  print('Year: $year');
-                  createCar(model: model, year: year);
-                },
-              ),
-            ),
-          )
-        ],
-      ),
+class _Pages extends StatelessWidget {
+  const _Pages({
+    required this.valueProvider,
+  });
+
+  final HomeScreenProvider valueProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: valueProvider.pageController,
+      physics: const NeverScrollableScrollPhysics(),
+      onPageChanged: (value) {
+        valueProvider.setValue = value;
+      },
+      children: [
+        const AddPhotoScreen(),
+        CustomForm(),
+      ],
     );
   }
 }
